@@ -1,0 +1,53 @@
+def is_cfc(ForCo, us_shareholders):
+    # Step 1: Direct and indirect analysis
+    direct_ownership = sum(us_shareholders.values())
+    if direct_ownership >= 50:
+        return True
+    
+    # Step 2: Constructive analysis
+    constructive_ownership = direct_ownership
+    for shareholder, ownership in us_shareholders.items():
+        if ownership >= 50:
+            constructive_ownership += 100 - direct_ownership
+        for other_shareholder, other_ownership in us_shareholders.items():
+            if other_shareholder != shareholder and other_ownership >= 50:
+                constructive_ownership += ownership * (100 - direct_ownership) / 100
+    if constructive_ownership >= 50:
+        return True
+    
+    return False
+
+def is_us_shareholder(usco, individual, cfc):
+    # Step 3: Check direct/indirect/constructive ownership
+    total_ownership = usco + individual
+    if total_ownership >= 10:
+        return True
+    
+    return False
+
+def calculate_subpartf_income(ownership, subpartf_income):
+    # Step 4: Calculate subpart F income on a pro rata basis
+    return ownership * subpartf_income
+
+# Example usage
+us_shareholders = {
+    'USCo': 30,  # Ownership percentage of USCo in ForCo
+    'Individual': 25,  # Ownership percentage of individual in ForCo
+}
+
+ForCo = 'ABC'  # Placeholder for the Controlled Foreign Corporation
+
+# Step 1: Determine if ForCo is a CFC
+if is_cfc(ForCo, us_shareholders):
+    # Step 3: Determine if USCo or individual is a US shareholder
+    if is_us_shareholder(us_shareholders['USCo'], us_shareholders['Individual'], ForCo):
+        # Step 4: Calculate subpart F income
+        subpartf_income = 1000  # Placeholder for the subpart F income
+        usco_income = calculate_subpartf_income(us_shareholders['USCo'], subpartf_income)
+        individual_income = calculate_subpartf_income(us_shareholders['Individual'], subpartf_income)
+        total_income = usco_income + individual_income
+        print("Subpart F Income:", total_income)
+    else:
+        print("No US shareholders with 10% or more ownership in ForCo.")
+else:
+    print("ForCo is not a Controlled Foreign Corporation.")
