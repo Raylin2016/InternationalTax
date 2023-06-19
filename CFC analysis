@@ -1,0 +1,37 @@
+def is_cfc_and_us_shareholder(ownership_percentage):
+    cfc_threshold = 50  # Ownership threshold for a foreign corporation to be considered a CFC
+    us_shareholder_threshold = 10  # Ownership threshold for a shareholder to be considered a US shareholder
+    
+    is_cfc = ownership_percentage >= cfc_threshold
+    is_us_shareholder = ownership_percentage >= us_shareholder_threshold
+    
+    return is_cfc, is_us_shareholder
+
+def classify_income(income):
+    personal_holding_income = 0
+    sales_income = 0
+    services_income = 0
+    
+    # Add your logic to classify income into the respective categories
+    # You can use if-elif-else statements or any other criteria you have
+    
+    return personal_holding_income, sales_income, services_income
+
+def calculate_subpart_f_income(subpart_f_income, gross_income, insurance_income, foreign_tax_rate, current_earnings):
+    # De Minimis Exception
+    if subpart_f_income < 1000000 and subpart_f_income / gross_income < 0.05:
+        subpart_f_income = 0
+    
+    # Full Inclusion Rule
+    if (subpart_f_income + gross_insurance_income) / gross_income > 0.70:
+        subpart_f_income = gross_income
+    
+    # High Tax Exception (elective)
+    if subpart_f_income > 0 and foreign_tax_rate > 0.189:
+        # Add logic for discussing possibilities when the election is made
+    
+    # subpart F income <= current earnings & profits
+    if subpart_f_income <= current_earnings:
+        # Proceed with further calculations or analysis
+    
+    return subpart_f_income
